@@ -5,9 +5,12 @@ module SimInfra
     # shows result of our tests in interactive Ruby (IRB) or standalone
     def self.serialize(msg= nil)
         return @@instructions if Object.const_defined?(:IRB)
-        require 'pp'
-        puts "\n\n\n#{'*' * 100}\n#{' ' * 30}#{msg}\n\n\n"
-        PP.pp @@instructions
+        require 'yaml'
+        yaml_data = YAML.dump(@@instructions.map(&:to_h))
+
+        File.open("IR.yaml", "w") do |file|
+            file.write(yaml_data)
+        end
     end
 
     # reset state
@@ -22,10 +25,10 @@ module SimInfra
     Field = Struct.new(:name, :from, :to, :value)
     ImmFieldPart = Struct.new(:name, :from, :to, :hi, :lo)
 
-    def self.field(name, from, to, value = nil)
+    def field(name, from, to, value = nil)
         Field.new(name, from, to, value).freeze
     end
-    def self.immpart(name, from, to, hi, lo)
+    def immpart(name, from, to, hi, lo)
         ImmFieldPart.new(name, from, to, hi, lo).freeze
     end
 

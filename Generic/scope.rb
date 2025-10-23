@@ -39,6 +39,6 @@ module SimInfra
         # which result in near all cases
         def stmt(name, operands, attrs= nil);
             @tree << IrStmt.new(name, operands, attrs); operands[0]
-        end    
+        end
     end
 end

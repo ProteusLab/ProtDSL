@@ -1,14 +1,18 @@
 require_relative "encoding"
+require_relative "regfile"
 require_relative "../../Generic/base"
 
 module RV32I
-    SimInfra.Instruction(:add) {
-        encoding *SimInfra.format_r_alu(:add)
+    extend SimInfra
+    Instruction(:ADD, XReg(:rd), XReg(:rs1), XReg(:rs2)) {
+        encoding *format_r_alu(:add, rd, rs1, rs2)
+        asm { "ADD #{rd}, #{rs1}, #{rs2}" }
         code { rd[]= rs1 + rs2 }
     }
 
-    SimInfra.Instruction(:sub) {
-        encoding *SimInfra.format_r_alu(:sub)
+    Instruction(:SUB, XReg(:rd), XReg(:rs1), XReg(:rs2)) {
+        encoding *format_r_alu(:add, rd, rs1, rs2)
+        asm { "SUB #{rd}, #{rs1}, #{rs2}" }
         code { rd[]= rs1 - rs2 }
     }
 end
